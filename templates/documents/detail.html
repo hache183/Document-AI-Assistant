@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ document.title }} - Document AI Assistant{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ document.title }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Tipo:</strong> {{ document.get_document_type_display }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Dimensione:</strong> {{ document.file_size|filesizeformat }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Caricato da:</strong> {{ document.uploaded_by }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Data:</strong> {{ document.uploaded_at|date:"d/m/Y H:i" }}
+                    </div>
+                </div>
+                
+                {% if document.summary %}
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> Riassunto AI</h5>
+                    {{ document.summary }}
+                </div>
+                {% endif %}
+                
+                <a href="{{ document.file.url }}" class="btn btn-primary" target="_blank">
+                    <i class="fas fa-download"></i> Scarica File
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-question"></i> Fai una Domanda</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.query_text }}
+                    <button type="submit" class="btn btn-success btn-sm mt-2">
+                        <i class="fas fa-paper-plane"></i> Invia
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if queries %}
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Domande e Risposte</h4>
+        {% for query in queries %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">
+                    <i class="fas fa-user"></i> {{ query.created_by }} - {{ query.created_at|date:"d/m/Y H:i" }}
+                </h6>
+                <div class="mb-2">
+                    <strong>Domanda:</strong> {{ query.query_text }}
+                </div>
+                <div class="alert alert-light mb-0">
+                    <strong>Risposta AI:</strong> {{ query.response }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

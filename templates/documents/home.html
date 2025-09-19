@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-light p-5 rounded mb-4">
+            <h1 class="display-4">Document AI Assistant</h1>
+            <p class="lead">Carica documenti e interrogali usando l'intelligenza artificiale</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'upload_document' %}" role="button">
+                <i class="fas fa-upload"></i> Carica Documento
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">{{ total_documents }}</h5>
+                <p class="card-text">Documenti Totali</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-question-circle fa-3x text-success mb-3"></i>
+                <h5 class="card-title">{{ total_queries }}</h5>
+                <p class="card-text">Query Totali</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-robot fa-3x text-info mb-3"></i>
+                <h5 class="card-title">OpenAI</h5>
+                <p class="card-text">Powered by AI</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if recent_documents %}
+<div class="row">
+    <div class="col-12">
+        <h3>Documenti Recenti</h3>
+        <div class="row">
+            {% for document in recent_documents %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ document.title }}</h5>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <i class="fas fa-file"></i> {{ document.get_document_type_display }}
+                                <br>
+                                <i class="fas fa-clock"></i> {{ document.uploaded_at|date:"d/m/Y H:i" }}
+                            </small>
+                        </p>
+                        <a href="{% url 'document_detail' document.pk %}" class="btn btn-primary btn-sm">
+                            Visualizza
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
