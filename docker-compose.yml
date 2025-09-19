@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build: .
@@ -10,11 +8,11 @@ services:
       - media_files:/app/media
     environment:
       - DEBUG=True
+      - SECRET_KEY=django-insecure-dev-key-for-docker
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     command: >
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
              python manage.py runserver 0.0.0.0:8000"
 
 volumes:

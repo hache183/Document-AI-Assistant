@@ -59,10 +59,8 @@ def generate_summary(text, max_length=200):
             temperature=0.3
         )
         return response.choices[0].message.content.strip()
-    except ImportError:
-        return "Riassunto non disponibile (libreria OpenAI non installata)"
     except Exception as e:
-        return f"Riassunto non disponibile (errore: {str(e)[:100]})"
+        return f"Riassunto non disponibile"
 
 def query_document_with_ai(document_text, query):
     """Interroga il documento usando OpenAI"""
@@ -84,7 +82,5 @@ def query_document_with_ai(document_text, query):
             temperature=0.3
         )
         return response.choices[0].message.content.strip()
-    except ImportError:
-        return "Risposta AI non disponibile (libreria OpenAI non installata)"
     except Exception as e:
-        return f"Risposta AI non disponibile (errore: {str(e)[:100]})"
+        return f"Risposta AI non disponibile"
